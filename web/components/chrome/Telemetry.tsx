@@ -97,7 +97,7 @@ export function Telemetry({ sections, tempLabel, locale }: Props) {
       </div>
 
       {/* Escritorio: esquina superior derecha */}
-      <div className="mono pointer-events-none fixed right-3 top-3 z-50 hidden w-46 border border-rule bg-ink-950/95 lg:block">
+      <div className="mono pointer-events-none fixed right-3 top-3 z-50 hidden w-46 border border-rule bg-ink-950 lg:block">
         <div className="flex items-baseline justify-between gap-3 px-2.5 pt-2">
           <span className="text-accent">{s.num}</span>
           <span className="truncate text-fg">{s.tag}</span>
@@ -117,7 +117,7 @@ export function Telemetry({ sections, tempLabel, locale }: Props) {
       </div>
 
       {/* Móvil: barra inferior */}
-      <div className="mono pointer-events-none fixed inset-x-0 bottom-0 z-50 border-t border-rule bg-ink-950/95 lg:hidden">
+      <div className="mono pointer-events-none fixed inset-x-0 bottom-0 z-50 border-t border-rule bg-ink-950 lg:hidden">
         {bar(1)}
         <div className="flex h-9 items-center justify-between gap-3 px-5">
           <span className="truncate">

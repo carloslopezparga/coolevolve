@@ -62,7 +62,7 @@ export function Nav({ locale, navLabel, items, all, menu, close, github, langSwi
     <header
       className={`fixed inset-x-0 top-0 z-40 border-b transition-[transform,background-color,border-color] duration-300 ease-machine focus-within:translate-y-0 ${
         show ? "translate-y-0" : "-translate-y-full"
-      } ${solid || open ? "border-rule bg-ink-950/95" : "border-transparent bg-transparent"}`}
+      } ${solid || open ? "border-rule bg-ink-950" : "border-transparent bg-transparent"}`}
     >
       <div className="flex h-(--nav-h) items-center gap-5 px-(--gutter) lg:pr-52">
         <Link href={home} className="flex-none" aria-label="CoolEvolve">

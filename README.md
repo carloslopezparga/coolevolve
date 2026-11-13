@@ -5,7 +5,7 @@
 
 **Un agente de IA que descubre algoritmos de control industrial. Primera misión: enfriar la infraestructura de la IA.**
 
-**Web del proyecto:** pendiente de despliegue en Vercel (ver [Despliegue](#despliegue)).
+**Web del proyecto:** pendiente de despliegue en Vercel (ver [Despliegue](#despliegue)). Cuando esté publicada, sustituye esta línea por su URL.
 
 > **Estado:** en desarrollo (fase F0, noviembre de 2026). Proyecto de TFG del Grado en Ingeniería en Tecnologías Industriales (ETSII-UPM) con vocación de startup. Todavía no hay resultados publicados: las cifras de este repositorio describen el problema y los objetivos, no logros conseguidos.
 
@@ -77,7 +77,14 @@ npm run dev
 
 ### Despliegue
 
-En Vercel: **Add New → Project**, importar `coolevolve`, **Root Directory: `web`** y **Deploy**. A partir de ahí, cada push a `main` se despliega solo.
+En Vercel:
+
+1. **Add New → Project**.
+2. Importar el repositorio `coolevolve`.
+3. **Root Directory: `web`** (el framework Next.js se detecta solo).
+4. **Deploy**.
+
+A partir de ahí, cada push a `main` se despliega solo. La web calcula su URL pública a partir del despliegue de Vercel; si usas un dominio propio, define `NEXT_PUBLIC_SITE_URL`.
 
 ## Autor
 
