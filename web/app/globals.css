@@ -176,6 +176,7 @@ html.lenis body {
   font-weight: 700;
   font-variant-numeric: tabular-nums;
   letter-spacing: -0.04em;
+  word-spacing: -0.3em;
 }
 
 .link {
@@ -392,7 +393,7 @@ html.lenis body {
 /* ───────────────────────── Código (Shiki) ───────────────────────── */
 .code {
   font-family: var(--font-mono);
-  font-size: var(--text-label);
+  font-size: 0.8125rem; /* límite inferior de --text-label: el código no crece */
   line-height: 1.75;
   font-variant-ligatures: none;
   tab-size: 4;
@@ -509,4 +510,65 @@ details > summary {
 }
 details > summary::-webkit-details-marker {
   display: none;
+}
+
+/* ───────────────────────── Bucle ───────────────────────── */
+.loop-node {
+  transform-box: fill-box;
+  transform-origin: center;
+  transition:
+    transform 420ms var(--ease-machine),
+    fill 300ms,
+    stroke 300ms;
+}
+
+/* Paso activo en las secciones fijas: los demás se pliegan. */
+.fold {
+  display: grid;
+  grid-template-rows: 1fr;
+}
+.fold > * {
+  overflow: hidden;
+  min-height: 0;
+}
+@media (min-width: 1024px) and (min-height: 640px) and (prefers-reduced-motion: no-preference) {
+  .fold {
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 480ms var(--ease-machine);
+  }
+  [data-active="true"] > .fold {
+    grid-template-rows: 1fr;
+  }
+}
+
+/* ───────────────────────── Diff de código ───────────────────────── */
+.diff-line {
+  display: grid;
+  grid-template-rows: 1fr;
+  opacity: 1;
+  transition:
+    grid-template-rows 520ms var(--ease-machine),
+    opacity 420ms ease-out,
+    background-color 600ms;
+}
+.diff-line > div {
+  overflow: hidden;
+  min-height: 0;
+}
+.diff-line[data-state="hidden"] {
+  grid-template-rows: 0fr;
+  opacity: 0;
+}
+.diff-line[data-state="added"] {
+  background: color-mix(in oklab, var(--cool-400), transparent 84%);
+}
+.diff-line[data-state="removed"] {
+  grid-template-rows: 0fr;
+  opacity: 0;
+  background: color-mix(in oklab, var(--hot-500), transparent 80%);
+  text-decoration: line-through;
+  transition:
+    grid-template-rows 520ms var(--ease-machine) 900ms,
+    opacity 500ms ease-out 600ms,
+    background-color 200ms;
 }

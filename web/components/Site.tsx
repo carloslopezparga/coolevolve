@@ -6,6 +6,10 @@ import { RevealObserver } from "./chrome/RevealObserver";
 import { Reticle } from "./chrome/Reticle";
 import { Hero } from "./sections/Hero";
 import { Problem } from "./sections/Problem";
+import { Loop } from "./sections/Loop";
+import { CodeSection } from "./sections/CodeSection";
+import { Vision } from "./sections/Vision";
+import { tokenize } from "@/lib/highlight";
 
 export const sectionNum = (key: SectionKey) => `§${String(SECTION_ORDER.indexOf(key) + 1).padStart(2, "0")}`;
 
@@ -16,6 +20,11 @@ export async function Site({ c }: { c: Content }) {
     num: sectionNum(key),
     tag: c.sections[key].tag,
   }));
+
+  const [pseudo, codeTokens] = await Promise.all([
+    tokenize(c.loop.pseudo),
+    tokenize(c.code.lines.map((l) => l.text).join("\n")),
+  ]);
 
   return (
     <>
@@ -46,6 +55,9 @@ export async function Site({ c }: { c: Content }) {
       <main id="main">
         <Hero c={c} />
         <Problem c={c} num={sectionNum("problem")} />
+        <Loop c={c} num={sectionNum("loop")} pseudo={pseudo} />
+        <CodeSection c={c} num={sectionNum("code")} tokens={codeTokens} />
+        <Vision c={c} num={sectionNum("vision")} />
       </main>
 
       <div className="grain" aria-hidden="true" />
