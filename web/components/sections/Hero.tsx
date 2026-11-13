@@ -6,7 +6,7 @@ export function Hero({ c }: { c: Content }) {
   const h = c.hero;
   return (
     <section id={c.sections.idea.id} className="relative z-2 overflow-x-clip" aria-labelledby="hero-title">
-      <div className="grid min-h-svh grid-cols-1 content-center gap-x-10 gap-y-10 px-(--gutter) pb-14 pt-24 lg:grid-cols-12 lg:pb-16 lg:pt-24">
+      <div className="grid min-h-svh grid-cols-1 content-center gap-x-10 gap-y-10 px-(--gutter) pb-14 pt-24 grid-cols-1 lg:grid-cols-12 lg:pb-16 lg:pt-24">
         <div className="lg:col-span-7 lg:self-center xl:pl-[max(0px,calc((100vw-82rem)/2))]">
           <p className="chip chip-accent hero-in">
             <span className="dot dot-live" aria-hidden="true" />

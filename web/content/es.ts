@@ -141,6 +141,7 @@ export const es: Content = {
         text: "Los mejores programas sobreviven en una base de datos y alimentan la siguiente generación.",
       },
     ],
+    resultLabel: "resultado",
     result:
       "Tras muchas generaciones, un controlador final en código legible, auditable y desplegable en el sistema de gestión del edificio.",
     ringNote: "Esquema ilustrativo del bucle",

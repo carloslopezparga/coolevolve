@@ -424,7 +424,8 @@ html.lenis body {
     transition: opacity 700ms ease-out;
     transition-delay: calc(var(--i, 0) * 90ms);
   }
-  .js .rv.is-in {
+  .js .rv.is-in,
+  .js .is-in .rv {
     opacity: 1;
   }
   .js .rv-line {
@@ -571,4 +572,70 @@ details > summary::-webkit-details-marker {
     grid-template-rows 520ms var(--ease-machine) 900ms,
     opacity 500ms ease-out 600ms,
     background-color 200ms;
+}
+
+/* ───────────────────────── Tabla del diferencial ───────────────────────── */
+.edge-cell {
+  background: transparent;
+  box-shadow: inset 0 0 0 0 transparent;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .js .edge-cell {
+    transition:
+      background-color 700ms var(--ease-machine),
+      color 700ms;
+    transition-delay: calc(200ms + var(--i, 0) * 170ms);
+  }
+  .js .edge-table:not(.is-in) .edge-cell {
+    background: transparent;
+    color: var(--text-dim);
+  }
+}
+.edge-cell,
+.edge-head {
+  background: color-mix(in oklab, var(--cool-400), transparent 88%);
+  color: var(--ice);
+}
+
+/* ───────────────────────── Arquitectura ───────────────────────── */
+.stack-node rect {
+  transition:
+    stroke 220ms,
+    fill 220ms;
+}
+.stack-node:focus-visible {
+  outline: none;
+}
+.stack-node:focus-visible rect {
+  stroke: var(--accent);
+  stroke-width: 2.5;
+}
+.stack-edge {
+  transition:
+    stroke 220ms,
+    opacity 220ms;
+}
+
+/* Casilla de la checklist del evaluador. */
+.tick {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .js .tick {
+    stroke-dashoffset: 1;
+    transition: stroke-dashoffset 520ms var(--ease-machine);
+    transition-delay: calc(150ms + var(--i, 0) * 60ms);
+  }
+  .js .is-in .tick {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* ───────────────────────── Riesgos ───────────────────────── */
+.risk[open] .risk-sign {
+  transform: rotate(45deg);
+}
+.risk-sign {
+  transition: transform 260ms var(--ease-machine);
 }

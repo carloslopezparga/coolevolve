@@ -9,6 +9,16 @@ import { Problem } from "./sections/Problem";
 import { Loop } from "./sections/Loop";
 import { CodeSection } from "./sections/CodeSection";
 import { Vision } from "./sections/Vision";
+import { Edge } from "./sections/Edge";
+import { WhyNow } from "./sections/WhyNow.server";
+import { Stack } from "./sections/Stack";
+import { Metrics } from "./sections/Metrics";
+import { Roadmap } from "./sections/Roadmap";
+import { Markets } from "./sections/Markets";
+import { Business } from "./sections/Business";
+import { Risks } from "./sections/Risks";
+import { Author } from "./sections/Author";
+import { Sources } from "./sections/Sources";
 import { tokenize } from "@/lib/highlight";
 
 export const sectionNum = (key: SectionKey) => `§${String(SECTION_ORDER.indexOf(key) + 1).padStart(2, "0")}`;
@@ -21,9 +31,10 @@ export async function Site({ c }: { c: Content }) {
     tag: c.sections[key].tag,
   }));
 
-  const [pseudo, codeTokens] = await Promise.all([
+  const [pseudo, codeTokens, marketTokens] = await Promise.all([
     tokenize(c.loop.pseudo),
     tokenize(c.code.lines.map((l) => l.text).join("\n")),
+    Promise.all(c.markets.items.map((m) => tokenize(m.code).then((lines) => lines[0] ?? []))),
   ]);
 
   return (
@@ -57,8 +68,18 @@ export async function Site({ c }: { c: Content }) {
         <Problem c={c} num={sectionNum("problem")} />
         <Loop c={c} num={sectionNum("loop")} pseudo={pseudo} />
         <CodeSection c={c} num={sectionNum("code")} tokens={codeTokens} />
+        <Edge c={c} num={sectionNum("edge")} />
+        <WhyNow c={c} num={sectionNum("why")} />
+        <Stack c={c} num={sectionNum("stack")} />
+        <Metrics c={c} num={sectionNum("metrics")} />
+        <Roadmap c={c} num={sectionNum("roadmap")} />
         <Vision c={c} num={sectionNum("vision")} />
+        <Markets c={c} num={sectionNum("markets")} code={marketTokens} />
+        <Business c={c} num={sectionNum("business")} />
+        <Risks c={c} num={sectionNum("risks")} />
+        <Author c={c} num={sectionNum("author")} />
       </main>
+      <Sources c={c} num={sectionNum("sources")} />
 
       <div className="grain" aria-hidden="true" />
       <SmoothScroll />

@@ -96,7 +96,7 @@ export function SitesBuilding({ t, head }: Props) {
   return (
     <div ref={track} className="pin:h-[380vh]">
       <div className="pin:sticky pin:top-0 pin:flex pin:h-svh pin:items-center">
-        <div className="wrap grid items-center gap-x-10 gap-y-10 lg:grid-cols-12">
+        <div className="wrap grid items-center gap-x-10 gap-y-10 grid-cols-1 lg:grid-cols-12">
           <div className="lg:col-span-5">
             {head}
             <ol className="mt-8 space-y-5 pin:space-y-2.5">

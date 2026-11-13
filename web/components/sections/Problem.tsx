@@ -19,7 +19,7 @@ export function Problem({ c, num }: { c: Content; num: string }) {
         head={<SectionHead num={num} tag={c.sections.problem.tag} title={p.title} />}
       />
 
-      <div className="wrap mt-16 grid gap-x-10 gap-y-14 lg:mt-8 lg:grid-cols-12">
+      <div className="wrap mt-16 grid gap-x-10 gap-y-14 lg:mt-8 grid-cols-1 lg:grid-cols-12">
         {/* IA ×4 */}
         <div className="lg:col-span-4" data-rv="" >
           <p className="num rv text-title text-hot-500">{p.ai.value}</p>

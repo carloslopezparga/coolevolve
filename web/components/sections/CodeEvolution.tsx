@@ -34,39 +34,43 @@ interface ListingProps {
 }
 
 function Listing({ t, tokens, stage, label, sinceStart }: ListingProps) {
-  let n = 0;
+  // Estado y número de cada línea para esta etapa.
+  const rows: { st: LineState; visible: boolean; n: number }[] = [];
+  let count = 0;
+  for (const line of t.lines) {
+    let st = stateAt(line, stage);
+    if (sinceStart && st === "shown" && line.from > 0) st = "added";
+    if (sinceStart && st === "removed") st = "hidden";
+    const visible = st === "shown" || st === "added";
+    if (visible) count += 1;
+    rows.push({ st, visible, n: count });
+  }
+
   return (
     <div className="code" role="group" aria-label={label}>
       <pre tabIndex={0} className="!px-0" data-lenis-prevent-horizontal>
         <code className="block min-w-max">
-          {t.lines.map((line, i) => {
-            let st = stateAt(line, stage);
-            if (sinceStart && st === "shown" && line.from > 0) st = "added";
-            if (sinceStart && st === "removed") st = "hidden";
-            const visible = st === "shown" || st === "added";
-            if (visible) n += 1;
-            return (
-              <span key={i} className="diff-line" data-state={st} aria-hidden={!visible}>
-                <div>
-                  <span className="flex">
-                    <span aria-hidden="true" className="w-9 flex-none select-none pr-2 text-right text-dim">
-                      {visible ? n : ""}
-                    </span>
-                    <span
-                      aria-hidden="true"
-                      className={`w-5 flex-none select-none text-center ${st === "added" ? "text-cool-400" : "text-hot-500"}`}
-                    >
-                      {MARK[st]}
-                    </span>
-                    {st === "added" ? <span className="sr-only">{t.legendAdd}: </span> : null}
-                    <span className="pr-5">
-                      <Tokens line={tokens[i] ?? []} />
-                    </span>
+          {rows.map(({ st, visible, n }, i) => (
+            <span key={i} className="diff-line" data-state={st} aria-hidden={!visible}>
+              <div>
+                <span className="flex">
+                  <span aria-hidden="true" className="w-9 flex-none select-none pr-2 text-right text-dim">
+                    {visible ? n : ""}
                   </span>
-                </div>
-              </span>
-            );
-          })}
+                  <span
+                    aria-hidden="true"
+                    className={`w-5 flex-none select-none text-center ${st === "added" ? "text-cool-400" : "text-hot-500"}`}
+                  >
+                    {MARK[st]}
+                  </span>
+                  {st === "added" ? <span className="sr-only">{t.legendAdd}: </span> : null}
+                  <span className="pr-5">
+                    <Tokens line={tokens[i] ?? []} />
+                  </span>
+                </span>
+              </div>
+            </span>
+          ))}
         </code>
       </pre>
     </div>
@@ -103,7 +107,7 @@ export function CodeEvolution({ t, tokens, head }: Props) {
   return (
     <div ref={track} className="pin:h-[340vh]">
       <div className="pin:sticky pin:top-0 pin:flex pin:h-svh pin:items-center">
-        <div className="wrap grid items-start gap-x-10 gap-y-10 lg:grid-cols-12 pin:items-center">
+        <div className="wrap grid items-start gap-x-10 gap-y-10 grid-cols-1 lg:grid-cols-12 pin:items-center">
           <div className="lg:col-span-5">
             {head}
             <p className="chip chip-dash mt-6">{t.label}</p>

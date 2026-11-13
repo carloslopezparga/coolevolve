@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
 import { REPO_URL } from "@/lib/site";
 import { Logo } from "@/components/ui/Logo";
 
@@ -64,9 +65,9 @@ export function Nav({ locale, navLabel, items, all, menu, close, github, langSwi
       } ${solid || open ? "border-rule bg-ink-950/95" : "border-transparent bg-transparent"}`}
     >
       <div className="flex h-(--nav-h) items-center gap-5 px-(--gutter) lg:pr-52">
-        <a href={home} className="flex-none" aria-label="CoolEvolve">
+        <Link href={home} className="flex-none" aria-label="CoolEvolve">
           <Logo />
-        </a>
+        </Link>
 
         <nav aria-label={navLabel} className="hidden min-w-0 flex-1 xl:block">
           <ul className="mono flex items-center gap-5">
@@ -123,26 +124,28 @@ export function Nav({ locale, navLabel, items, all, menu, close, github, langSwi
           </div>
 
           <div role="group" aria-label={langSwitch} className="flex items-center border border-rule">
-            <a
+            <Link
               href="/"
               hrefLang="es"
               lang="es"
+              prefetch={false}
               aria-current={locale === "es" ? "page" : undefined}
               className={`flex h-9 items-center px-2 ${locale === "es" ? "bg-ink-800 text-fg" : "text-dim hover:text-fg"}`}
             >
               <span className="sr-only">Español</span>
               <span aria-hidden="true">ES</span>
-            </a>
-            <a
+            </Link>
+            <Link
               href="/en"
               hrefLang="en"
               lang="en"
+              prefetch={false}
               aria-current={locale === "en" ? "page" : undefined}
               className={`flex h-9 items-center border-l border-rule px-2 ${locale === "en" ? "bg-ink-800 text-fg" : "text-dim hover:text-fg"}`}
             >
               <span className="sr-only">English</span>
               <span aria-hidden="true">EN</span>
-            </a>
+            </Link>
           </div>
 
           <a href={REPO_URL} className="link hidden sm:inline" rel="noopener">

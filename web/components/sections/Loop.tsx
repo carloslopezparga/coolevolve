@@ -14,9 +14,9 @@ export function Loop({ c, num, pseudo }: { c: Content; num: string; pseudo: TokL
         head={<SectionHead num={num} tag={c.sections.loop.tag} title={l.title} lead={l.lead} />}
       />
 
-      <div className="wrap mt-16 grid gap-x-10 gap-y-10 lg:mt-4 lg:grid-cols-12" data-rv="">
+      <div className="wrap mt-16 grid gap-x-10 gap-y-10 lg:mt-4 grid-cols-1 lg:grid-cols-12" data-rv="">
         <p className="rv text-lead text-fg lg:col-span-5">
-          <span className="mono mb-3 block text-accent">→ {c.locale === "es" ? "resultado" : "result"}</span>
+          <span className="mono mb-3 block text-accent">→ {l.resultLabel}</span>
           {l.result}
         </p>
         <figure className="panel crop rv min-w-0 lg:col-span-7" style={{ ["--i" as string]: 2 }}>

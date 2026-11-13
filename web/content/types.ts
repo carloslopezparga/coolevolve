@@ -111,6 +111,7 @@ export interface Content {
     title: string;
     lead: string;
     steps: { name: string; text: string }[];
+    resultLabel: string;
     result: string;
     ringNote: string;
     lapNote: string;
