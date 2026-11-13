@@ -34,6 +34,13 @@ function sample(stops: readonly (readonly [number, string])[], t: number): RGB {
 
 const RAMP_STOPS = RAMP.map((c, i) => [i / (RAMP.length - 1), c] as const);
 
+/** Como `ramp`, pero en hexadecimal (para next/og, que no entiende `rgb(r g b)`). */
+export function rampHex(t: number): string {
+  return `#${sample(RAMP_STOPS, t)
+    .map((v) => Math.round(v).toString(16).padStart(2, "0"))
+    .join("")}`;
+}
+
 /** Color de la rampa completa: 0 = más caliente, 1 = más frío. */
 export function ramp(t: number): string {
   return toCss(sample(RAMP_STOPS, t));

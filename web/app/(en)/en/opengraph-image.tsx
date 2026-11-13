@@ -1,0 +1,10 @@
+import { en } from "@/content/en";
+import { ogContentType, ogImage, ogSize } from "@/lib/og";
+
+export const alt = en.meta.ogAlt;
+export const size = ogSize;
+export const contentType = ogContentType;
+
+export default function Image() {
+  return ogImage(en);
+}
