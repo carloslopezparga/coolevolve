@@ -1,0 +1,512 @@
+@import "tailwindcss";
+
+/* Secciones fijas (pin): solo en escritorio y si el usuario acepta movimiento. */
+@custom-variant pin (@media (min-width: 1024px) and (min-height: 640px) and (prefers-reduced-motion: no-preference));
+@custom-variant unpin (@media not ((min-width: 1024px) and (min-height: 640px) and (prefers-reduced-motion: no-preference)));
+@custom-variant fine (@media (hover: hover) and (pointer: fine));
+
+/* ───────────────────────── Tokens ───────────────────────── */
+:root {
+  --ink-950: #070b12;
+  --ink-900: #0b111c;
+  --ink-800: #121b2b;
+  --line: #1e2a3d;
+  --text: #e9eef2;
+  --text-dim: #a9b6c4;
+  --hot-600: #e5481b;
+  --hot-500: #ff6a2b;
+  --amber: #ffb238;
+  --cool-300: #7fe0ea;
+  --cool-400: #3fd0e0;
+  --ice: #dff7fa;
+
+  /* Rampa térmica para datos y visualizaciones. */
+  --ramp: linear-gradient(
+    90deg,
+    var(--hot-600),
+    var(--hot-500) 20%,
+    var(--amber) 40%,
+    var(--cool-300) 60%,
+    var(--cool-400) 80%,
+    var(--ice)
+  );
+
+  /* Estado térmico de la página: lo actualiza el scroll (ver Telemetry). */
+  --accent: var(--hot-500);
+  --heat: 1;
+  --bg: color-mix(in oklab, var(--ink-950), var(--accent) 3.5%);
+  --rule: color-mix(in oklab, var(--line), var(--accent) 14%);
+
+  --gutter: 1.25rem;
+  --nav-h: 3.5rem;
+}
+
+@media (min-width: 768px) {
+  :root {
+    --gutter: 2.5rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root {
+    --gutter: 3.5rem;
+  }
+}
+
+@theme inline {
+  --color-ink-950: var(--ink-950);
+  --color-ink-900: var(--ink-900);
+  --color-ink-800: var(--ink-800);
+  --color-line: var(--line);
+  --color-rule: var(--rule);
+  --color-fg: var(--text);
+  --color-dim: var(--text-dim);
+  --color-hot-600: var(--hot-600);
+  --color-hot-500: var(--hot-500);
+  --color-amber: var(--amber);
+  --color-cool-300: var(--cool-300);
+  --color-cool-400: var(--cool-400);
+  --color-ice: var(--ice);
+  --color-accent: var(--accent);
+
+  --font-display: var(--font-archivo), "Arial Narrow", "Helvetica Neue", Arial, sans-serif;
+  --font-sans: var(--font-plex), "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-mono: var(--font-jbmono), ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+}
+
+@theme {
+  /* Escala fija de 5 tamaños. No añadir más. */
+  --text-*: initial;
+  --text-label: clamp(0.8125rem, 0.79rem + 0.1vw, 0.875rem);
+  --text-label--line-height: 1.5;
+  --text-body: 1.0625rem;
+  --text-body--line-height: 1.62;
+  --text-lead: clamp(1.25rem, 1.08rem + 0.75vw, 1.625rem);
+  --text-lead--line-height: 1.32;
+  --text-title: clamp(2rem, 1.15rem + 3.5vw, 4.25rem);
+  --text-title--line-height: 1.02;
+  --text-mega: clamp(2.75rem, 0.6rem + 9.4vw, 9rem);
+  --text-mega--line-height: 0.92;
+
+  --radius-*: initial;
+  --radius-xs: 2px;
+
+  --ease-machine: cubic-bezier(0.2, 0.7, 0.1, 1);
+}
+
+/* ───────────────────────── Base ───────────────────────── */
+html {
+  background: var(--ink-950);
+  color: var(--text);
+  color-scheme: dark;
+  scroll-padding-top: 4.5rem;
+  -webkit-text-size-adjust: 100%;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html:not(.lenis) {
+    scroll-behavior: smooth;
+  }
+}
+
+body {
+  background: var(--bg);
+  font-family: var(--font-sans);
+  font-size: var(--text-body);
+  line-height: 1.62;
+  overflow-x: clip;
+  accent-color: var(--accent);
+  caret-color: var(--accent);
+  /* Hueco para el HUD inferior en móvil. */
+  padding-bottom: 2.5rem;
+}
+
+@media (min-width: 1024px) {
+  body {
+    padding-bottom: 0;
+  }
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--ink-950);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+a {
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.22em;
+}
+
+/* Lenis */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+/* ───────────────────────── Tipografía ───────────────────────── */
+.display {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-variation-settings: "wdth" 118;
+  letter-spacing: -0.012em;
+  text-wrap: balance;
+}
+
+.mono {
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  line-height: 1.5;
+  font-variant-ligatures: none;
+  letter-spacing: 0.01em;
+}
+
+.num {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.04em;
+}
+
+.link {
+  color: var(--accent);
+  text-decoration: underline;
+  text-decoration-color: color-mix(in oklab, var(--accent), transparent 55%);
+  transition: text-decoration-color 160ms;
+}
+.link:hover {
+  text-decoration-color: var(--accent);
+}
+
+/* Titular del hero: el eje wdth pasa de condensado a expandido al cargar. */
+.hero-title {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-variation-settings: "wdth" 125;
+  letter-spacing: -0.02em;
+  line-height: 0.9;
+  font-size: clamp(2.6rem, 11.4vw, 5.25rem);
+}
+@media (min-width: 1024px) {
+  .hero-title {
+    font-size: clamp(4rem, 6.9vw, 7.75rem);
+  }
+}
+.hero-title > span {
+  display: block;
+  white-space: nowrap;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .hero-title {
+    animation: widen 1150ms var(--ease-machine) 120ms both;
+  }
+  .hero-in {
+    animation: fade-in 700ms ease-out both;
+    animation-delay: calc(650ms + var(--i, 0) * 110ms);
+  }
+}
+@keyframes widen {
+  from {
+    font-variation-settings: "wdth" 62;
+    letter-spacing: 0.01em;
+  }
+  to {
+    font-variation-settings: "wdth" 125;
+    letter-spacing: -0.02em;
+  }
+}
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* ───────────────────────── Plano de fondo ───────────────────────── */
+.blueprint {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(to right, color-mix(in oklab, var(--rule), transparent 62%) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in oklab, var(--rule), transparent 62%) 1px, transparent 1px);
+  background-size: 5rem 5rem;
+  background-position: var(--gutter) 0;
+  mask-image: linear-gradient(to bottom, #000 0, #000 100%);
+}
+
+/* Regla lateral con marcas de cota (solo escritorio). */
+.ruler {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: calc(var(--gutter) - 0.5rem);
+  z-index: 1;
+  pointer-events: none;
+  display: none;
+  background-image:
+    linear-gradient(to bottom, var(--rule) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--rule) 1px, transparent 1px);
+  background-size:
+    0.75rem 5rem,
+    0.375rem 1rem;
+  background-repeat: repeat-y;
+  background-position:
+    right top,
+    right top;
+}
+@media (min-width: 1280px) {
+  .ruler {
+    display: block;
+  }
+}
+
+/* Grano: más intenso en caliente, casi nada en frío. */
+.grain {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  opacity: calc(0.035 + var(--heat) * 0.085);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 180px 180px;
+}
+
+/* ───────────────────────── Piezas ───────────────────────── */
+.wrap {
+  width: 100%;
+  max-width: 82rem;
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.section {
+  position: relative;
+  z-index: 2;
+  padding-block: clamp(4.5rem, 10vw, 9rem);
+}
+
+/* Línea de cota de cabecera de sección. */
+.cota {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: var(--text-dim);
+}
+.cota::after {
+  content: "";
+  flex: 1;
+  height: 0.5625rem;
+  border-bottom: 1px solid var(--rule);
+  border-right: 1px solid var(--rule);
+  transform: translateY(-0.28rem);
+}
+.cota-num {
+  color: var(--accent);
+}
+
+/* Etiqueta técnica (estado, «ilustrativo», etc.). */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  padding: 0.2rem 0.55rem;
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  line-height: 1.5;
+  color: var(--text);
+  background: color-mix(in oklab, var(--ink-900), transparent 15%);
+}
+.chip-accent {
+  border-color: color-mix(in oklab, var(--accent), transparent 45%);
+}
+.chip-dash {
+  border-style: dashed;
+}
+
+.dot {
+  width: 0.4375rem;
+  height: 0.4375rem;
+  border-radius: 50%;
+  background: var(--accent);
+  flex: none;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .dot-live {
+    animation: blink 1.8s steps(2, jump-none) infinite;
+  }
+}
+@keyframes blink {
+  50% {
+    opacity: 0.25;
+  }
+}
+
+.panel {
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  background: color-mix(in oklab, var(--ink-900), transparent 8%);
+}
+
+/* Esquinas de retícula sobre un bloque. */
+.crop {
+  position: relative;
+}
+.crop::before,
+.crop::after {
+  content: "";
+  position: absolute;
+  width: 0.75rem;
+  height: 0.75rem;
+  pointer-events: none;
+}
+.crop::before {
+  top: -1px;
+  left: -1px;
+  border-top: 1px solid var(--accent);
+  border-left: 1px solid var(--accent);
+}
+.crop::after {
+  bottom: -1px;
+  right: -1px;
+  border-bottom: 1px solid var(--accent);
+  border-right: 1px solid var(--accent);
+}
+
+/* ───────────────────────── Código (Shiki) ───────────────────────── */
+.code {
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  line-height: 1.75;
+  font-variant-ligatures: none;
+  tab-size: 4;
+}
+.code pre {
+  margin: 0;
+  background: transparent !important;
+  overflow-x: auto;
+  padding: 1rem 1.125rem;
+}
+.code code {
+  font-family: inherit;
+}
+.code-inline pre {
+  padding: 0;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+/* ───────────────────────── Movimiento contenido ───────────────────────── */
+/* Trazos que se dibujan y fundidos al entrar en pantalla (Reveal). */
+.rv {
+  opacity: 1;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .js .rv {
+    opacity: 0;
+    transition: opacity 700ms ease-out;
+    transition-delay: calc(var(--i, 0) * 90ms);
+  }
+  .js .rv.is-in {
+    opacity: 1;
+  }
+  .js .rv-line {
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 900ms var(--ease-machine);
+    transition-delay: calc(var(--i, 0) * 90ms);
+  }
+  .js .is-in .rv-line,
+  .js .rv-line.is-in {
+    transform: scaleX(1);
+  }
+  .js .rv-draw {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    transition: stroke-dashoffset 1100ms var(--ease-machine);
+    transition-delay: calc(var(--i, 0) * 140ms);
+  }
+  .js .is-in .rv-draw,
+  .js .rv-draw.is-in {
+    stroke-dashoffset: 0;
+  }
+  .flow {
+    animation: flow 1.6s linear infinite;
+  }
+  .pulse-ring {
+    animation: pulse-ring 2.2s ease-out infinite;
+  }
+  .blink-slot {
+    animation: blink-slot 1.4s steps(2, jump-none) infinite;
+  }
+}
+@keyframes flow {
+  to {
+    stroke-dashoffset: -24;
+  }
+}
+@keyframes pulse-ring {
+  0% {
+    transform: scale(0.6);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(2.4);
+    opacity: 0;
+  }
+}
+@keyframes blink-slot {
+  50% {
+    opacity: 0.35;
+  }
+}
+
+/* Tabla comparativa apilada en móvil. */
+@media (max-width: 767px) {
+  .stack-table thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+  }
+  .stack-table,
+  .stack-table tbody,
+  .stack-table tr,
+  .stack-table th,
+  .stack-table td {
+    display: block;
+  }
+  .stack-table td[data-label]::before {
+    content: attr(data-label);
+    display: block;
+    font-family: var(--font-mono);
+    font-size: var(--text-label);
+    color: var(--text-dim);
+    margin-bottom: 0.15rem;
+  }
+}
+
+details > summary {
+  list-style: none;
+  cursor: pointer;
+}
+details > summary::-webkit-details-marker {
+  display: none;
+}
