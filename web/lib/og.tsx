@@ -7,9 +7,10 @@ import { hash2, rampHex } from "./thermal";
 export const ogSize = { width: 1200, height: 630 };
 export const ogContentType = "image/png";
 
+// Se leen una vez al cargar el módulo: así la imagen se genera en el build.
 const fonts = join(process.cwd(), "assets/fonts");
-const archivo = readFile(join(fonts, "ArchivoExpanded-ExtraBold.ttf"));
-const mono = readFile(join(fonts, "JetBrainsMono-Medium.ttf"));
+const archivo = await readFile(join(fonts, "ArchivoExpanded-ExtraBold.ttf"));
+const mono = await readFile(join(fonts, "JetBrainsMono-Medium.ttf"));
 
 const COLS = 7;
 const ROWS = 9;
@@ -96,8 +97,8 @@ export async function ogImage(c: Content) {
     {
       ...ogSize,
       fonts: [
-        { name: "Archivo", data: await archivo, weight: 800, style: "normal" },
-        { name: "JetBrains Mono", data: await mono, weight: 500, style: "normal" },
+        { name: "Archivo", data: archivo, weight: 800, style: "normal" },
+        { name: "JetBrains Mono", data: mono, weight: 500, style: "normal" },
       ],
     },
   );

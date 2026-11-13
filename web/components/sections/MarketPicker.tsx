@@ -1,12 +1,14 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { AnimatePresence, LazyMotion, domAnimation } from "motion/react";
+import { AnimatePresence, LazyMotion } from "motion/react";
 import * as m from "motion/react-m";
 import type { Content } from "@/content/types";
 import type { TokLine } from "@/lib/highlight";
 import { useMotionOk } from "@/lib/hooks";
 import { Tokens } from "@/components/ui/Code";
+
+const loadFeatures = () => import("@/lib/motionFeatures").then((m) => m.default);
 
 interface Props {
   t: Content["markets"];
@@ -32,7 +34,7 @@ export function MarketPicker({ t, code }: Props) {
   const transition = { duration: motionOk ? 0.28 : 0, ease: [0.2, 0.7, 0.1, 1] as const };
 
   return (
-    <LazyMotion features={domAnimation} strict>
+    <LazyMotion features={loadFeatures} strict>
       <div className="mt-10 lg:mt-14">
         <p id="market-pick" className="mono text-dim">
           {t.pick}

@@ -61,14 +61,9 @@ export interface Content {
     github: string;
     langSwitch: string;
     hudTemp: string;
-    illustrative: string;
     source: string;
     pending: string;
-    tbd: string;
-    target: string;
-    step: string;
     generation: string;
-    of: string;
   };
   hero: {
     status: string;
@@ -127,7 +122,6 @@ export interface Content {
     lines: CodeLine[];
     legendAdd: string;
     legendDel: string;
-    stageLabel: string;
   };
   edge: {
     title: string;
@@ -167,7 +161,6 @@ export interface Content {
   roadmap: {
     title: string;
     here: string;
-    done: string;
     planned: string;
     phases: { id: string; name: string; dates: string; what: string }[];
   };

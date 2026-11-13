@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { SECTION_ORDER, type Content, type SectionKey } from "@/content/types";
 import { Nav } from "./chrome/Nav";
 import { Telemetry } from "./chrome/Telemetry";
@@ -63,21 +64,36 @@ export async function Site({ c }: { c: Content }) {
       />
       <Telemetry sections={sections} tempLabel={c.ui.hudTemp} locale={c.locale} />
 
+      {/* Cada sección va en su propio límite de Suspense: se hidrata por partes y no bloquea el hilo principal. */}
       <main id="main">
         <Hero c={c} />
-        <Problem c={c} num={sectionNum("problem")} />
-        <Loop c={c} num={sectionNum("loop")} pseudo={pseudo} />
-        <CodeSection c={c} num={sectionNum("code")} tokens={codeTokens} />
-        <Edge c={c} num={sectionNum("edge")} />
-        <WhyNow c={c} num={sectionNum("why")} />
-        <Stack c={c} num={sectionNum("stack")} />
-        <Metrics c={c} num={sectionNum("metrics")} />
-        <Roadmap c={c} num={sectionNum("roadmap")} />
-        <Vision c={c} num={sectionNum("vision")} />
-        <Markets c={c} num={sectionNum("markets")} code={marketTokens} />
-        <Business c={c} num={sectionNum("business")} />
-        <Risks c={c} num={sectionNum("risks")} />
-        <Author c={c} num={sectionNum("author")} />
+        <Suspense>
+          <Problem c={c} num={sectionNum("problem")} />
+        </Suspense>
+        <Suspense>
+          <Loop c={c} num={sectionNum("loop")} pseudo={pseudo} />
+        </Suspense>
+        <Suspense>
+          <CodeSection c={c} num={sectionNum("code")} tokens={codeTokens} />
+        </Suspense>
+        <Suspense>
+          <Edge c={c} num={sectionNum("edge")} />
+          <WhyNow c={c} num={sectionNum("why")} />
+        </Suspense>
+        <Suspense>
+          <Stack c={c} num={sectionNum("stack")} />
+          <Metrics c={c} num={sectionNum("metrics")} />
+          <Roadmap c={c} num={sectionNum("roadmap")} />
+        </Suspense>
+        <Suspense>
+          <Vision c={c} num={sectionNum("vision")} />
+        </Suspense>
+        <Suspense>
+          <Markets c={c} num={sectionNum("markets")} code={marketTokens} />
+          <Business c={c} num={sectionNum("business")} />
+          <Risks c={c} num={sectionNum("risks")} />
+          <Author c={c} num={sectionNum("author")} />
+        </Suspense>
       </main>
       <Sources c={c} num={sectionNum("sources")} />
 

@@ -92,6 +92,11 @@ export function Metrics({ c, num }: { c: Content; num: string }) {
                   <Gauge kind={it.kind} />
                   <p className="mono mt-1 text-center text-dim max-sm:hidden">
                     {m.reading}
+                    {it.kind === "below" || it.kind === "near" ? (
+                      <span className="block">
+                        <span aria-hidden="true" className="text-fg">│</span> {it.ref}
+                      </span>
+                    ) : null}
                   </p>
                 </div>
                 <div className="min-w-0">

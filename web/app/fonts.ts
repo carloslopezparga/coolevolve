@@ -21,6 +21,7 @@ export const jbmono = JetBrains_Mono({
   subsets: ["latin"],
   variable: "--font-jbmono",
   display: "swap",
+  preload: false, // Etiquetas pequeñas: deja el ancho de banda inicial al CSS y al titular.
 });
 
 export const fontVars = `${archivo.variable} ${plex.variable} ${jbmono.variable}`;

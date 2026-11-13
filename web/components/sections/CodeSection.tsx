@@ -9,7 +9,12 @@ export function CodeSection({ c, num, tokens }: { c: Content; num: string; token
       <CodeEvolution
         t={c.code}
         tokens={tokens}
-        head={<SectionHead num={num} tag={c.sections.code.tag} title={c.code.title} lead={c.code.intro} />}
+        head={
+          <SectionHead num={num} tag={c.sections.code.tag} title={c.code.title}>
+            {/* Con el panel fijo, la etiqueta y los pasos ya lo explican. */}
+            <p className="mt-5 max-w-[46ch] text-lead text-dim pin:hidden">{c.code.intro}</p>
+          </SectionHead>
+        }
       />
     </section>
   );

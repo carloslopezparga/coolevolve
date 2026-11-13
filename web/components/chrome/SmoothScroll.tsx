@@ -14,7 +14,7 @@ export function SmoothScroll() {
         lenis?.destroy();
         lenis = null;
       } else if (!lenis) {
-        lenis = new Lenis({ autoRaf: true, anchors: { offset: -72 }, lerp: 0.11 });
+        lenis = new Lenis({ autoRaf: true, anchors: true, lerp: 0.11 });
       }
     };
 

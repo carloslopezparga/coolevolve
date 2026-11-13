@@ -68,3 +68,31 @@ export function useElementProgress(
 export const span = (p: number, a: number, b: number) => clamp((p - a) / (b - a));
 
 export const easeInOut = (t: number) => t * t * (3 - 2 * t);
+
+/**
+ * Encoge el contenido de una sección fija para que quepa en la altura de
+ * pantalla (portátiles bajos). Solo actúa con el pin activo.
+ */
+export function useFitZoom(ref: RefObject<HTMLElement | null>, enabled: boolean, reserve = 40) {
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    if (!enabled) {
+      el.style.zoom = "";
+      return;
+    }
+    const fit = () => {
+      el.style.zoom = "1";
+      const natural = el.getBoundingClientRect().height;
+      const z = Math.max(0.68, Math.min(1, (window.innerHeight - reserve) / Math.max(1, natural)));
+      el.style.zoom = z < 0.995 ? z.toFixed(3) : "";
+    };
+    fit();
+    window.addEventListener("resize", fit);
+    document.fonts?.ready.then(fit).catch(() => {});
+    return () => {
+      window.removeEventListener("resize", fit);
+      el.style.zoom = "";
+    };
+  }, [ref, enabled, reserve]);
+}

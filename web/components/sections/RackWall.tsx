@@ -142,7 +142,13 @@ function StaticWall() {
       aria-hidden="true"
       focusable="false"
     >
+      <defs>
+        <pattern id="rack-units" width="1" height={1 / 6} patternUnits="userSpaceOnUse">
+          <rect width="1" height={0.24 / 6} fill="#070B12" fillOpacity="0.2" />
+        </pattern>
+      </defs>
       {cells}
+      <rect width={COLS} height={ROWS} fill="url(#rack-units)" />
     </svg>
   );
 }
@@ -182,7 +188,7 @@ export function RackWall({ genLabel, cota, agent, caption }: Props) {
         lastGen = g;
         genRef.current.textContent = pad(g);
       }
-      if (agentRef.current) agentRef.current.style.opacity = sweeping ? "1" : "0.35";
+      if (agentRef.current) agentRef.current.style.opacity = sweeping ? "1" : "0.6";
     };
 
     const resize = () => {
@@ -239,11 +245,27 @@ export function RackWall({ genLabel, cota, agent, caption }: Props) {
       if (started) return;
       started = true;
       try {
-        gl = canvas.getContext("webgl", { antialias: false, alpha: false, powerPreference: "low-power" });
+        // Sin aceleración por hardware el shader costaría demasiado: se queda el muro estático.
+        gl = canvas.getContext("webgl", {
+          antialias: false,
+          alpha: false,
+          powerPreference: "low-power",
+          failIfMajorPerformanceCaveat: true,
+        });
       } catch {
         gl = null;
       }
       if (!gl) return; // Se queda el muro estático.
+
+      // Algunos navegadores entregan un contexto por software (SwiftShader, llvmpipe)
+      // aunque se pida lo contrario: ahí tampoco se anima.
+      const info = gl.getExtension("WEBGL_debug_renderer_info");
+      const renderer = info ? String(gl.getParameter(info.UNMASKED_RENDERER_WEBGL)) : "";
+      if (/swiftshader|llvmpipe|softpipe|software/i.test(renderer)) {
+        gl.getExtension("WEBGL_lose_context")?.loseContext();
+        gl = null;
+        return;
+      }
 
       const compile = (type: number, src: string) => {
         const sh = gl!.createShader(type)!;

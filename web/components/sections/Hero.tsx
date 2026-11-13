@@ -12,14 +12,15 @@ export function Hero({ c }: { c: Content }) {
             <span className="dot dot-live" aria-hidden="true" />
             {h.status}
           </p>
+          {/* Un solo bloque de texto y visible desde el primer pintado: es el LCP. */}
           <h1 id="hero-title" className="hero-title mt-6 text-fg lg:mt-8">
-            <span>{h.headline[0]} </span>
-            <span>{h.headline[1]} </span>
+            <span>{h.headline[0]}</span>
+            <br />
+            <span>{h.headline[1]}</span>
+            <br />
             <span>{h.headline[2]}</span>
           </h1>
-          <p className="hero-in mt-7 max-w-[41ch] text-lead text-fg lg:mt-9" style={{ ["--i" as string]: 1 }}>
-            {h.sub}
-          </p>
+          <p className="mt-7 max-w-[41ch] text-lead text-fg lg:mt-9">{h.sub}</p>
           <dl className="mono hero-in mt-6 grid max-w-xl gap-x-8 gap-y-2 sm:grid-cols-2" style={{ ["--i" as string]: 2 }}>
             {h.points.map((p) => (
               <div key={p.label}>

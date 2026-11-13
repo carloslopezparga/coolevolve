@@ -3,7 +3,7 @@
 import { useRef, useState } from "react";
 import type { Content } from "@/content/types";
 import { useMotionOk, usePinned } from "@/lib/hooks";
-import { easeInOut, span, useElementProgress } from "@/lib/scroll";
+import { easeInOut, span, useElementProgress, useFitZoom } from "@/lib/scroll";
 import { Source } from "@/components/ui/Source";
 
 const START = 415;
@@ -27,8 +27,10 @@ export function ProblemChart({ t, sourceLabel, head }: Props) {
   const fillRef = useRef<HTMLDivElement | null>(null);
   const tipRef = useRef<HTMLDivElement | null>(null);
   const [phase, setPhase] = useState<0 | 1 | 2>(2);
+  const fit = useRef<HTMLDivElement | null>(null);
   const pinned = usePinned();
   const motionOk = useMotionOk();
+  useFitZoom(fit, pinned);
 
   useElementProgress(
     track,
@@ -49,8 +51,8 @@ export function ProblemChart({ t, sourceLabel, head }: Props) {
 
   return (
     <div ref={track} className="pin:h-[230vh]">
-      <div className="pin:sticky pin:top-0 pin:flex pin:h-svh pin:flex-col pin:justify-center pin:py-16">
-        <div className="wrap">
+      <div className="pin:sticky pin:top-0 pin:flex pin:h-svh pin:flex-col pin:justify-center">
+        <div ref={fit} className="wrap">
           {head}
           <figure className="mt-10 lg:mt-12">
             <figcaption className="mono text-dim">

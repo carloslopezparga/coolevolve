@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import type { Content } from "@/content/types";
 import { useMotionOk, usePinned } from "@/lib/hooks";
-import { span, useElementProgress } from "@/lib/scroll";
+import { span, useElementProgress, useFitZoom } from "@/lib/scroll";
 
 /* ── Proyección isométrica (axonometría explotada) ── */
 const U = 44;
@@ -51,8 +51,10 @@ export function SitesBuilding({ t, head }: Props) {
   const track = useRef<HTMLDivElement | null>(null);
   const fig = useRef<HTMLElement | null>(null);
   const [stage, setStage] = useState(5);
+  const fit = useRef<HTMLDivElement | null>(null);
   const pinned = usePinned();
   const motionOk = useMotionOk();
+  useFitZoom(fit, pinned);
 
   useElementProgress(
     track,
@@ -96,10 +98,10 @@ export function SitesBuilding({ t, head }: Props) {
   return (
     <div ref={track} className="pin:h-[380vh]">
       <div className="pin:sticky pin:top-0 pin:flex pin:h-svh pin:items-center">
-        <div className="wrap grid items-center gap-x-10 gap-y-10 grid-cols-1 lg:grid-cols-12">
+        <div ref={fit} className="wrap grid items-center gap-x-10 gap-y-10 grid-cols-1 lg:grid-cols-12">
           <div className="lg:col-span-5">
             {head}
-            <ol className="mt-8 space-y-5 pin:space-y-2.5">
+            <ol className="mt-8 space-y-5 pin:mt-6 pin:space-y-2">
               {t.steps.map((s, i) => {
                 const active = pinned ? stage === i + 1 : true;
                 return (
@@ -126,7 +128,6 @@ export function SitesBuilding({ t, head }: Props) {
                 );
               })}
             </ol>
-            <p className="mono mt-6 text-dim">{t.status}</p>
           </div>
 
           <figure ref={fig} className="lg:col-span-7">
@@ -338,6 +339,7 @@ export function SitesBuilding({ t, head }: Props) {
               <p className="mt-3 flex justify-center">
                 <span className="chip chip-dash">{t.figure}</span>
               </p>
+              <p className="mono mt-3 text-center text-dim">{t.status}</p>
             </figcaption>
           </figure>
         </div>

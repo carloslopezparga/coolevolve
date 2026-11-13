@@ -4,7 +4,7 @@ import { useRef, useState, type ReactNode } from "react";
 import type { Content } from "@/content/types";
 import type { TokLine } from "@/lib/highlight";
 import { usePinned } from "@/lib/hooks";
-import { useElementProgress } from "@/lib/scroll";
+import { useElementProgress, useFitZoom } from "@/lib/scroll";
 import { Tokens } from "@/components/ui/Code";
 
 type Stage = 0 | 1 | 2;
@@ -54,7 +54,7 @@ function Listing({ t, tokens, stage, label, sinceStart }: ListingProps) {
             <span key={i} className="diff-line" data-state={st} aria-hidden={!visible}>
               <div>
                 <span className="flex">
-                  <span aria-hidden="true" className="w-9 flex-none select-none pr-2 text-right text-dim">
+                  <span aria-hidden="true" className="w-8 flex-none select-none pr-2 text-right text-dim">
                     {visible ? n : ""}
                   </span>
                   <span
@@ -64,7 +64,7 @@ function Listing({ t, tokens, stage, label, sinceStart }: ListingProps) {
                     {MARK[st]}
                   </span>
                   {st === "added" ? <span className="sr-only">{t.legendAdd}: </span> : null}
-                  <span className="pr-5">
+                  <span className="pr-3">
                     <Tokens line={tokens[i] ?? []} />
                   </span>
                 </span>
@@ -82,7 +82,9 @@ export function CodeEvolution({ t, tokens, head }: Props) {
   const track = useRef<HTMLDivElement | null>(null);
   const marker = useRef<HTMLSpanElement | null>(null);
   const [stage, setStage] = useState<Stage>(2);
+  const fit = useRef<HTMLDivElement | null>(null);
   const pinned = usePinned();
+  useFitZoom(fit, pinned);
 
   useElementProgress(
     track,
@@ -107,7 +109,7 @@ export function CodeEvolution({ t, tokens, head }: Props) {
   return (
     <div ref={track} className="pin:h-[340vh]">
       <div className="pin:sticky pin:top-0 pin:flex pin:h-svh pin:items-center">
-        <div className="wrap grid items-start gap-x-10 gap-y-10 grid-cols-1 lg:grid-cols-12 pin:items-center">
+        <div ref={fit} className="wrap grid items-start gap-x-10 gap-y-10 grid-cols-1 lg:grid-cols-12 pin:items-center">
           <div className="lg:col-span-5">
             {head}
             <p className="chip chip-dash mt-6">{t.label}</p>
@@ -150,7 +152,7 @@ export function CodeEvolution({ t, tokens, head }: Props) {
             </ol>
           </div>
 
-          <div className="min-w-0 lg:col-span-7">
+          <div className="min-w-0 lg:col-span-7 xl:-mr-10">
             {/* Con pin: un solo panel que cambia con el scroll */}
             <figure className="panel crop hidden pin:block">
               <figcaption className="mono flex items-center justify-between gap-4 border-b border-rule px-4 py-2">

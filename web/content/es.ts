@@ -49,14 +49,9 @@ export const es: Content = {
     github: "GitHub",
     langSwitch: "Idioma",
     hudTemp: "T_página",
-    illustrative: "ilustrativo",
     source: "fuente",
     pending: "pendiente",
-    tbd: "por definir",
-    target: "objetivo",
-    step: "paso",
     generation: "gen",
-    of: "de",
   },
   hero: {
     status: "en desarrollo · F0",
@@ -207,7 +202,6 @@ mejor = validar_en_episodios_ocultos(top(poblacion))`,
     ],
     legendAdd: "línea añadida",
     legendDel: "línea eliminada",
-    stageLabel: "etapa",
   },
   edge: {
     title: "El diferencial: código legible, no caja negra",
@@ -368,7 +362,6 @@ mejor = validar_en_episodios_ocultos(top(poblacion))`,
   roadmap: {
     title: "Hoja de ruta",
     here: "estamos aquí",
-    done: "en curso",
     planned: "previsto",
     phases: [
       {

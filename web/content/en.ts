@@ -49,14 +49,9 @@ export const en: Content = {
     github: "GitHub",
     langSwitch: "Language",
     hudTemp: "T_page",
-    illustrative: "illustrative",
     source: "source",
     pending: "pending",
-    tbd: "to be defined",
-    target: "target",
-    step: "step",
     generation: "gen",
-    of: "of",
   },
   hero: {
     status: "in development · F0",
@@ -207,7 +202,6 @@ best = validate_on_hidden_episodes(top(population))`,
     ],
     legendAdd: "added line",
     legendDel: "removed line",
-    stageLabel: "stage",
   },
   edge: {
     title: "The edge: readable code, not a black box",
@@ -368,7 +362,6 @@ best = validate_on_hidden_episodes(top(population))`,
   roadmap: {
     title: "Roadmap",
     here: "we are here",
-    done: "in progress",
     planned: "planned",
     phases: [
       {

@@ -3,7 +3,7 @@
 import { useRef, useState, type ReactNode } from "react";
 import type { Content } from "@/content/types";
 import { useMotionOk, usePinned } from "@/lib/hooks";
-import { span, useElementProgress } from "@/lib/scroll";
+import { span, useElementProgress, useFitZoom } from "@/lib/scroll";
 import { pulseAt } from "@/lib/thermal";
 
 const R = 200;
@@ -42,8 +42,10 @@ export function LoopRing({ t, genLabel, head }: Props) {
   const line = useRef<HTMLSpanElement | null>(null);
   const [active, setActive] = useState(0);
   const [gen, setGen] = useState(LAPS);
+  const fit = useRef<HTMLDivElement | null>(null);
   const pinned = usePinned();
   const motionOk = useMotionOk();
+  useFitZoom(fit, pinned);
 
   useElementProgress(
     track,
@@ -73,7 +75,7 @@ export function LoopRing({ t, genLabel, head }: Props) {
         className="pin:sticky pin:top-0 pin:flex pin:h-svh pin:items-center"
         style={{ ["--pulse" as string]: pulseAt(1) }}
       >
-        <div className="wrap grid items-center gap-x-10 gap-y-10 grid-cols-1 lg:grid-cols-12">
+        <div ref={fit} className="wrap grid items-center gap-x-10 gap-y-10 grid-cols-1 lg:grid-cols-12">
           <div className="lg:col-span-5">
             {head}
             <ol ref={list} className="relative mt-10 space-y-6 pin:space-y-3">

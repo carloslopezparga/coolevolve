@@ -99,7 +99,6 @@ html {
   background: var(--ink-950);
   color: var(--text);
   color-scheme: dark;
-  scroll-padding-top: 4.5rem;
   -webkit-text-size-adjust: 100%;
 }
 
@@ -204,16 +203,23 @@ html.lenis body {
   }
 }
 .hero-title > span {
-  display: block;
   white-space: nowrap;
 }
 @media (prefers-reduced-motion: no-preference) {
+  /* Móvil: misma entrada, pero con transform (solo compositor) para no bloquear el hilo principal. */
   .hero-title {
-    animation: widen 1150ms var(--ease-machine) 120ms both;
+    transform-origin: left center;
+    animation: widen-lite 950ms var(--ease-machine) 80ms both;
   }
   .hero-in {
     animation: fade-in 700ms ease-out both;
     animation-delay: calc(650ms + var(--i, 0) * 110ms);
+  }
+}
+@media (prefers-reduced-motion: no-preference) and (min-width: 1024px) {
+  /* Escritorio: el eje wdth real de Archivo, de condensado a expandido. */
+  .hero-title {
+    animation: widen 1150ms var(--ease-machine) 120ms both;
   }
 }
 @keyframes widen {
@@ -224,6 +230,14 @@ html.lenis body {
   to {
     font-variation-settings: "wdth" 125;
     letter-spacing: -0.02em;
+  }
+}
+@keyframes widen-lite {
+  from {
+    transform: scaleX(0.6);
+  }
+  to {
+    transform: scaleX(1);
   }
 }
 @keyframes fade-in {
@@ -473,9 +487,10 @@ html.lenis body {
     opacity: 0;
   }
 }
+/* Parpadea solo el borde: el texto mantiene su contraste. */
 @keyframes blink-slot {
   50% {
-    opacity: 0.35;
+    border-color: color-mix(in oklab, var(--accent), transparent 72%);
   }
 }
 
